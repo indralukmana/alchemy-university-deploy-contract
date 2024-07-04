@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "compile": "hardhat compile",
-    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia"
+    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
+    "test": "hardhat test"
   },
   "keywords": [],
   "author": "",
