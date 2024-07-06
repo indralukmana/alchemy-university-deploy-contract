@@ -11,7 +11,7 @@ contract Faucet {
     function withdraw(uint _amount) public payable {
         // can only withdraw up to .1 ETH
         require(
-            _amount < 100000000000000000,
+            _amount <= 100000000000000000,
             "Faucet: Cannot withdraw more than .1 ETH"
         );
         (bool sent, ) = payable(msg.sender).call{value: _amount}("");
