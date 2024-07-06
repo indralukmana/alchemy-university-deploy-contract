@@ -33,4 +33,6 @@ contract Faucet {
         );
         _;
     }
+
+    receive() external payable {}
 }
