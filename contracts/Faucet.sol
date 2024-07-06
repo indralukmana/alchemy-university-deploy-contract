@@ -2,14 +2,39 @@
 pragma solidity ^0.8.24;
 
 contract Faucet {
-    function withdraw(uint _amount) public {
+    address payable public owner;
+
+    constructor() payable {
+        owner = payable(msg.sender);
+    }
+
+    function withdraw(uint _amount) public payable {
         // can only withdraw up to .1 ETH
         require(
             _amount < 100000000000000000,
             "Faucet: Cannot withdraw more than .1 ETH"
         );
-        payable(msg.sender).transfer(_amount);
+        (bool sent, ) = payable(msg.sender).call{value: _amount}("");
+
+        require(sent, "Faucet: Failed to send Ether");
     }
 
-    receive() external payable {}
+    function withdrawAll() public onlyOwner {
+        (bool sent, ) = payable(msg.sender).call{value: address(this).balance}(
+            ""
+        );
+        require(sent, "Faucet: Failed to send Ether");
+    }
+
+    function destroyFaucet() public onlyOwner {
+        selfdestruct(payable(msg.sender));
+    }
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Faucet: Only owner can call this function"
+        );
+        _;
+    }
 }
