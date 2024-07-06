@@ -16,18 +16,14 @@ contract Faucet {
         );
         (bool sent, ) = payable(msg.sender).call{value: _amount}("");
 
-        require(sent, "Faucet: Failed to send Ether");
+        require(sent, "Faucet Withdraw: Failed to send Ether");
     }
 
     function withdrawAll() public onlyOwner {
         (bool sent, ) = payable(msg.sender).call{value: address(this).balance}(
             ""
         );
-        require(sent, "Faucet: Failed to send Ether");
-    }
-
-    function destroyFaucet() public onlyOwner {
-        selfdestruct(payable(msg.sender));
+        require(sent, "Faucet WithdrawAll: Failed to send Ether");
     }
 
     modifier onlyOwner() {
